@@ -97,4 +97,5 @@ def actualizar_dashboard(depto_seleccionado, manera_seleccionada):
     return kpi1, kpi2, kpi3, fig_mapa, fig_edad, fig_lineas, fig_sexo_depto, fig_causas, fig_tabla, fig_ciudades, fig_menor_mort, fig_genero
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Le decimos que escuche en el puerto 10000 que exige la nube de Render
+    app.run(debug=True, host="0.0.0.0", port=10000)
