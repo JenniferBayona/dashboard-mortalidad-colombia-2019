@@ -162,7 +162,7 @@ La aplicación inicializa de forma correcta desplegando el panel completo en la 
 ### 8.2. Despliegue Exitoso en la Nube (Logs de Infraestructura)
 Se certifica la correcta transferencia del entorno hacia los servidores de producción de Render. Los logs demuestran la inicialización del servidor WSGI Gunicorn, el cual atiende las peticiones web de manera aislada y segura, asegurando estabilidad y optimización de memoria frente al tráfico público.
 
-![Despliegue Render Logs](imagenes/despliegue_render.jpg)
+![Despliegue Render Logs](imagenes/despliegue_render.png)
 
 ---
 
