@@ -86,29 +86,72 @@ def tabla_top_causas(df):
 def grafico_sexo_departamento(df):
     if df.empty: return px.scatter(title="Sin datos")
     agrupado = df.groupby(["DEPARTAMENTO", "SEXO_DESC"]).size().reset_index(name="Total")
-    
-    # SOLUCIÓN: Agregamos el diccionario 'labels' para traducir las variables a lenguaje humano
     fig = px.bar(
         agrupado, x="DEPARTAMENTO", y="Total", color="SEXO_DESC", 
         title="Comparación por Género en cada Departamento", barmode="stack", 
         color_discrete_sequence=px.colors.qualitative.Pastel,
         labels={"SEXO_DESC": "Género", "DEPARTAMENTO": "Departamento", "Total": "Casos"}
     )
-    
     fig.update_layout(xaxis={'categoryorder': 'total descending', 'title': ''}, yaxis_title="Total de Casos", margin={"r": 10, "t": 40, "l": 10, "b": 40}, legend_title_text="Género")
     return fig
 
 def grafico_histograma_edad(df):
-    if df.empty or "GRUPO_EDAD1" not in df.columns: return px.scatter(title="Sin datos de Edad")
-    df_plot = df.copy()
-    df_plot["GRUPO_EDAD1"] = df_plot["GRUPO_EDAD1"].astype(str)
+    if df.empty or "GRUPO_EDAD1" not in df.columns: 
+        return px.scatter(title="Sin datos de Edad")
     
-    fig = px.histogram(
-        df_plot, x="GRUPO_EDAD1", title="Distribución por Grupo de Edad (Ciclo de Vida)", 
-        color_discrete_sequence=["#8E44AD"]
+    df_plot = df.copy()
+    
+    # Asegurar que la columna sea entera para poder evaluarla matemáticamente
+    df_plot["GRUPO_EDAD1"] = pd.to_numeric(df_plot["GRUPO_EDAD1"], errors='coerce').fillna(29).astype(int)
+    
+    # Diccionario de traducción exacta según los códigos DANE de la actividad
+    mapa_ciclo_vida = {
+        0: "Mortalidad neonatal", 1: "Mortalidad neonatal", 2: "Mortalidad neonatal", 
+        3: "Mortalidad neonatal", 4: "Mortalidad neonatal",
+        5: "Mortalidad infantil", 6: "Mortalidad infantil",
+        7: "Primera infancia", 8: "Primera infancia",
+        9: "Niñez", 10: "Niñez",
+        11: "Adolescencia",
+        12: "Juventud", 13: "Juventud",
+        14: "Adultez temprana", 15: "Adultez temprana", 16: "Adultez temprana",
+        17: "Adultez intermedia", 18: "Adultez intermedia", 19: "Adultez intermedia",
+        20: "Vejez", 21: "Vejez", 22: "Vejez", 23: "Vejez", 24: "Vejez",
+        25: "Longevidad / Centenarios", 26: "Longevidad / Centenarios", 
+        27: "Longevidad / Centenarios", 28: "Longevidad / Centenarios",
+        29: "Edad desconocida"
+    }
+    
+    # Lista de orden lógico de edad para que el eje X no se desorganice alfabéticamente
+    orden_categorias = [
+        "Mortalidad neonatal", "Mortalidad infantil", "Primera infancia", 
+        "Niñez", "Adolescencia", "Juventud", "Adultez temprana", 
+        "Adultez intermedia", "Vejez", "Longevidad / Centenarios", "Edad desconocida"
+    ]
+    
+    # Crear la nueva columna con categorías legibles para humanos
+    df_plot["CATEGORIA_EDAD"] = df_plot["GRUPO_EDAD1"].map(mapa_ciclo_vida).fillna("Edad desconocida")
+    
+    # Agrupar los datos para usar px.bar en lugar de histogram (así respeta el orden estricto de la lista)
+    conteo_edad = df_plot["CATEGORIA_EDAD"].value_counts().reset_index()
+    conteo_edad.columns = ["CATEGORIA_EDAD", "Total"]
+    
+    # Construcción del gráfico optimizado
+    fig = px.bar(
+        conteo_edad, 
+        x="CATEGORIA_EDAD", 
+        y="Total",
+        title="Distribución por Grupo de Edad (Ciclo de Vida)", 
+        color_discrete_sequence=["#8E44AD"],
+        category_orders={"CATEGORIA_EDAD": orden_categorias} # Forzamos el orden cronológico
     )
     
-    # SOLUCIÓN: Ocultamos los nombres técnicos y aplicamos formato de miles al Tooltip
-    fig.update_traces(hovertemplate="<b>Edad: %{x}</b><br>Casos: %{y:,}<extra></extra>")
-    fig.update_layout(xaxis={'categoryorder': 'category ascending', 'title': 'Código DANE del Rango de Edad'}, yaxis_title="Total de Casos", margin={"r": 10, "t": 40, "l": 10, "b": 10})
+    # Quitar las líneas del grid del fondo para limpiar la visualización y ajustar márgenes
+    fig.update_traces(hovertemplate="<b>Etapa:</b> %{x}<br><b>Casos:</b> %{y:,}<extra></extra>")
+    fig.update_layout(
+        plot_bgcolor="rgba(0,0,0,0)",
+        paper_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(title='', fixedrange=True, showgrid=False),
+        yaxis=dict(title='Total de Casos', fixedrange=True, showgrid=False),
+        margin={"r": 10, "t": 40, "l": 10, "b": 40}
+    )
     return fig
