@@ -1,6 +1,7 @@
 import dash
 from dash import Dash, dcc, html, Input, Output
 import dash_bootstrap_components as dbc
+import os
 
 from carga_datos import mortalidad, obtener_metricas_kpi
 # Importamos todas las 9 funciones gráficas
@@ -97,5 +98,6 @@ def actualizar_dashboard(depto_seleccionado, manera_seleccionada):
     return kpi1, kpi2, kpi3, fig_mapa, fig_edad, fig_lineas, fig_sexo_depto, fig_causas, fig_tabla, fig_ciudades, fig_menor_mort, fig_genero
 
 if __name__ == "__main__":
-    # Le decimos que escuche en el puerto 10000 que exige la nube de Render
-    app.run(debug=True, host="0.0.0.0", port=10000)
+    # Lee el puerto que le da Render automáticamente, y si no encuentra ninguno (local), usa el 8050
+    port = int(os.environ.get("PORT", 8050))
+    app.run(debug=False, host="0.0.0.0", port=port)
