@@ -94,7 +94,7 @@ Para automatizar la instalación y el arranque del servidor profesional de produ
   ```bash
   pip install -r requirements.txt
 
-  ---
+  ```
 
   ## 6. Software
 Para el diseño, desarrollo, optimización y puesta en producción de este ecosistema analítico, se seleccionaron herramientas de software modernas e industriales dentro del campo de la ciencia de datos y la ingeniería de software:
@@ -129,24 +129,24 @@ Abra la terminal de comandos de su sistema operativo (o Git Bash) y descargue lo
 ```bash
 git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
 cd tu-repositorio
-
+```
 ### Paso 2: Verificar el intérprete de Python
 Antes de proceder con la instalación de las dependencias, es de vital importancia validar la versión del entorno de ejecución global en su máquina local. El core lógico de las librerías analíticas modernas utilizadas (especialmente las dependencias binarias indexadas) requiere **Python versión 3.9 o superior**. 
 
 Ejecutar la aplicación sobre un intérprete obsoleto (como Python 2.x o compilaciones inferiores a 3.9) provocará errores críticos de sintaxis o fallas de compilación durante el montaje de los paquetes. Verifique su versión activa en consola con el siguiente comando:
 ```bash
 python --version
-
+```
 ### Paso 3: Instalar las dependencias y librerías
 Instale la totalidad de los paquetes obligatorios de software del ecosistema del proyecto (incluyendo los motores de ingeniería de datos y renderización gráfica) mediante el administrador oficial de paquetes `pip`:
 ```bash
 pip install -r requirements.txt
-
+```
 ### Paso 4: Ejecutar la aplicación en desarrollo
 Inicie el servidor local de la interfaz web interactiva de Dash corriendo el script principal de control. Este comando inicializará la carga de los componentes gráficos y el pipeline de datos binarios en su máquina:
 ```bash
 python app.py
-
+```
 ---
 
 ## 8. Visualizaciones con explicaciones de los resultados
