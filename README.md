@@ -49,7 +49,7 @@ dashboard-mortalidad-colombia-2019-main/
     └── ejecucion_render.png # Captura de la UI operando desde el link público
 
 
----
+```
 
 
 ## 4. Requisitos
