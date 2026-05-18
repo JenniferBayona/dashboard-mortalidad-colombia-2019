@@ -98,6 +98,4 @@ def actualizar_dashboard(depto_seleccionado, manera_seleccionada):
     return kpi1, kpi2, kpi3, fig_mapa, fig_edad, fig_lineas, fig_sexo_depto, fig_causas, fig_tabla, fig_ciudades, fig_menor_mort, fig_genero
 
 if __name__ == "__main__":
-    # Lee el puerto que le da Render automáticamente, y si no encuentra ninguno (local), usa el 8050
-    port = int(os.environ.get("PORT", 8050))
-    app.run(debug=False, host="0.0.0.0", port=port)
+    app.run(debug=False)
